@@ -1,14 +1,13 @@
-import ComponenteExemplo from '@/components/ComponenteExemplo/ComponenteExemplo'
-import { Inter } from 'next/font/google'
+import { Manrope } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+const manrope = Manrope({ subsets: ['latin'] })
 
 export default function Home() {
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
+      className={`flex min-h-screen flex-col items-center justify-between p-24 ${manrope.className} bg-secondaryColor`}
     >
-     <h1> ESSA É A Home</h1>
+ 
     </main>
   )
 }
