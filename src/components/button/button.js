@@ -1,11 +1,11 @@
-import { Manrope } from 'next/font/google'
+import Link from 'next/link';
 
-const manrope = Manrope({ subsets: ['latin'] })
-
-export default function ButtonCustom({title}) {
+export default function ButtonCustom({title, route}) {
   return (
-    <button  class="bg-primaryColor hover:bg-white hover:text-primaryColor text-secondaryColor font-bold py-2 px-4 rounded">
+    <Link href={route}>
+    <button className="bg-primaryColor text-secondaryColor font-bold py-2 px-4 rounded">
         <h1>{title}</h1>
     </button>
+    </Link>
   );
 }

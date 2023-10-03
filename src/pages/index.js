@@ -1,4 +1,6 @@
-import ButtonCustom from '@/components/button/button'
+import HomeCard from '@/components/home-card/home-card'
+
+
 import { Manrope } from 'next/font/google'
 
 const manrope = Manrope({ subsets: ['latin'] })
@@ -6,9 +8,11 @@ const manrope = Manrope({ subsets: ['latin'] })
 export default function Home() {
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${manrope.className} bg-secondaryColor`}
+      className={`flex min-h-screen items-center justify-between p-32 ${manrope.className} bg-secondaryColor`}
     >
-      <ButtonCustom title="Acesse aqui"/>
+      <HomeCard title="Faça uma reserva" buttonTitle="Reservar" buttonRoute="/reserva" cardImage="quarto-background.png"/>
+      <HomeCard title="Fazer checkin" buttonTitle="Checkin" buttonRoute="/checkin" cardImage="quarto-background.png"/>
+      <HomeCard title="Fazer checkout" buttonTitle="Checkout" buttonRoute="/checkout" cardImage="quarto-background.png"/>
     </main>
 
   )
