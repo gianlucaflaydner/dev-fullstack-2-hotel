@@ -11,8 +11,8 @@ export default function Home() {
       className={`flex min-h-screen items-center justify-between p-32 ${manrope.className} bg-secondaryColor`}
     >
       <HomeCard title="Faça uma reserva" buttonTitle="Reservar" buttonRoute="/reserva" cardImage="quarto-background.png"/>
-      <HomeCard title="Fazer checkin" buttonTitle="Checkin" buttonRoute="/checkin" cardImage="quartocasal1.webp"/>
-      <HomeCard title="Fazer checkout" buttonTitle="Checkout" buttonRoute="/checkout" cardImage=""/>
+      <HomeCard title="Fazer checkin" buttonTitle="Checkin" buttonRoute="/checkin" cardImage="quarto-background.png"/>
+      <HomeCard title="Fazer checkout" buttonTitle="Checkout" buttonRoute="/checkout" cardImage="quarto-background.png"/>
     </main>
 
   )

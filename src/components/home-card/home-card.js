@@ -1,11 +1,8 @@
-import Image from "next/image";
-import backgroundImageTeste from "../../../public/images/quarto-background.png";
 import ButtonCustom from "../button/button";
-
 export default function HomeCard({title, buttonTitle, buttonRoute, cardImage}) {
   return (
     <div className="bg-white h-[420px] rounded w-[350px] flex items-center justify-center border-2 border-slate-100 border-solid transform hover:scale-[1.03] transition duration-500 ease-in-out">
-    <div className={`h-[95%] w-full bg-cover bg-opacity-90 flex justify-center items-center bg-[url('/images/${cardImage}')] opacity-90`}>
+    <div className={`h-[95%] w-full bg-cover flex justify-center items-center bg-[url('/images/${cardImage}')] opacity-90`}>
       <div className="w-full h-[150px] flex flex-col items-center bg-white">
         <h1 className="text-xl mb-2 mt-2">
             {title}
