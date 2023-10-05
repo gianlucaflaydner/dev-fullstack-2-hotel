@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const hospedeSchema = new mongoose.Schema({
+const hospedesSchema = new mongoose.Schema({
   nome: {
     type: String,
     required: true,
@@ -24,7 +24,7 @@ const hospedeSchema = new mongoose.Schema({
   },
 });
 
-const Hospede =
-  mongoose.models.hospede ?? mongoose.model("hospede", hospedeSchema);
+const Hospedes =
+  mongoose.models.hospedes ?? mongoose.model("hospedes", hospedesSchema);
 
-export default Hospede;
+export default Hospedes;
