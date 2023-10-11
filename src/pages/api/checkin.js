@@ -23,7 +23,7 @@ export default async function handler(req, res) {
       };
       const novaReserva = await Reservas.create(reserva);
 
-      const quartoAtualizado = await Quartos.findByIdAndUpdate(
+      await Quartos.findByIdAndUpdate(
         parsedBody.quarto,
         { $push: { reservas: novaReserva._id } },
         { new: true }
