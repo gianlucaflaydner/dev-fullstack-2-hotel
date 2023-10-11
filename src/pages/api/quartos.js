@@ -1,10 +1,10 @@
 import Quartos from "@/models/Quartos";
 import connectDatabase from "@/services/database";
 
-connectDatabase();
-
 export default async function handler(req, res) {
   const { method } = req;
+
+  await connectDatabase();
 
   if (method === "GET") {
     try {
