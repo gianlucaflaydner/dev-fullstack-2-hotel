@@ -3,10 +3,10 @@ import Quartos from "@/models/Quartos";
 import Reservas from "@/models/Reservas";
 import connectDatabase from "@/services/database";
 
-connectDatabase();
-
 export default async function handler(req, res) {
   const { method, body } = req;
+
+  await connectDatabase();
 
   if (method === "POST") {
     try {
