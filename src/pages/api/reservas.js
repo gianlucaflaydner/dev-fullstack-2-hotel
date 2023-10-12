@@ -1,31 +1,26 @@
-import Quartos from "@/models/Quartos";
-import Reservas from "@/models/Reservas";
+import Hospede from "@/models/Hospedes";
+import Reserva from "@/models/Reservas";
 import connectDatabase from "@/services/database";
 
-connectDatabase();
-
 export default async function handler(req, res) {
-  const { method, body } = req;
+  await connectDatabase();
 
-  if (method === "POST") {
-    try {
-      let parsedBody;
-      if (body && body !== "{}") {
-        parsedBody = JSON.parse(body);
-      } else {
-        parsedBody = {};
-      }
+  try {
+    const { body } = req;
+    const parsedBody = body && body !== "{}" ? JSON.parse(body) : {};
 
-      const novaReserva = await Reservas.create(parsedBody);
-      await Quartos.findByIdAndUpdate(
-        parsedBody.quarto,
-        { $push: { reservas: novaReserva._id } },
-        { new: true }
-      );
-      res.status(200).json({ success: true });
-    } catch (error) {
-      console.log("error", error);
-      res.status(500).json({ success: false, errors: error.errors });
-    }
+    const { hospede, quarto, ...reservaData } = parsedBody;
+
+    const createdHospede = await Hospede.create(hospede);
+    await Reserva.create({
+      ...reservaData,
+      quarto,
+      hospede: createdHospede._id,
+    });
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ success: false, errors: error });
   }
 }

@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import Reservas from "./Reservas";
 
 const quartosSchema = new mongoose.Schema({
   numero: {
@@ -14,16 +15,9 @@ const quartosSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  reservas: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Reservas",
-      required: true,
-    },
-  ],
 });
 
-const Quartos =
+const Quarto =
   mongoose.models.quartos ?? mongoose.model("quartos", quartosSchema);
 
-export default Quartos;
+export default Quarto;
