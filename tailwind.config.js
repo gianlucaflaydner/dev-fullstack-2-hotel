@@ -14,7 +14,8 @@ module.exports = {
       'secondaryColor': '#DACBB3',
       slate: colors.slate,
       white: colors.white,
-      black: colors.black
+      black: colors.black,
+      red: colors.red
       
     }
   },
