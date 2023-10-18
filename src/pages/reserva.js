@@ -1,9 +1,11 @@
-export default function Reserva(){
+import ReservationForm from "@/components/reservation-form";
 
-    return(
+export default function Reserva() {
 
-        <div className="w-screen min-h-screen flex flex-col items-center justify-center bg-[#2f2c2c]">
-         
-        </div>
-    )
+
+  return (
+    <div className="w-screen min-h-screen flex items-center justify-center px-32 bg-secondaryColor">
+      <ReservationForm />
+    </div>
+  );
 }
