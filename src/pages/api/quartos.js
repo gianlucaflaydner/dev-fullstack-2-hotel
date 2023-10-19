@@ -11,7 +11,7 @@ export default async function handler(req, res) {
       const quartos = await Quartos.find({});
       res.status(200).json(quartos);
     } catch (error) {
-      res.status(500).json({ success: false, error });
+      res.status(500).json({ success: false, errors: error });
     }
   }
 }
