@@ -1,4 +1,4 @@
-const transformDateToNewDate = (date) => {
+export const transformDateToNewDate = (date) => {
   const [day, month, year] = date.split("/");
 
   return new Date(`${month}/${day}/${year}`);
