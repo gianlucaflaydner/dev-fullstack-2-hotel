@@ -4,20 +4,21 @@ import { isValidCPF, formatCPF } from "@brazilian-utils/brazilian-utils";
 export default function CheckoutForm() {
   const [cpfValue, setCpfValue] = useState("");
 
-  const handleSubmitCpf = (e) => {
+  const handleSubmitCpf = async (e) => {
     e.preventDefault();
 
     const formattedCpfValue = formatCPF(cpfValue);
 
-    if(isValidCPF(formattedCpfValue)){
-        // chamada do checout
+    if (isValidCPF(formattedCpfValue)) {
+      const resposta = await fetch(
+        `/api/checkout?cpf=${formattedCpfValue.replace(/\D/g, "")}`,
+        { method: "GET" }
+      ).then((response) => response.json());
     } else {
-        alert('CPF INVÁLIDO')
+      alert("CPF INVÁLIDO");
     }
+  };
 
-  }
-
-  console.log(cpfValue, 'CPF VALUE');
   return (
     <section className="bg-slate-100 p-4 bg-opacity-20 px-10 rounded h-[400px] flex flex-col items-center justify-center">
       <h1 className="text-2xl font-bold mb-4">Formulário de Check-out</h1>
