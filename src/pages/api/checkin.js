@@ -1,6 +1,6 @@
 import Hospede from "@/models/Hospedes";
 import connectDatabase from "@/services/database";
-import Reserva from "../reserva";
+import Reserva from "@/models/Reservas";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -15,8 +15,8 @@ export default async function handler(req, res) {
       const hospede = await Hospede.findOne({ cpf });
       const reservas = await Reserva.find({});
 
-      const reservaRespectiva = reservas.find(
-        (reserva) => reserva.hospede === hospede._id
+      const reservaRespectiva = reservas.find((reserva) =>
+        reserva.hospede.equals(hospede._id)
       );
 
       const response =
