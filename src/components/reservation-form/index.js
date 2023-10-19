@@ -4,11 +4,7 @@ import useObterQuartos from "@/services/hooks/useObterQuartos";
 import React, { useState } from "react";
 import RoomsCard from "./rooms-card";
 import SpinnerCustom from "../spinner-custom";
-import {
-  isValidCPF,
-  formatCPF,
-
-} from "@brazilian-utils/brazilian-utils";
+import { isValidCPF, formatCPF } from "@brazilian-utils/brazilian-utils";
 import _ from "lodash";
 
 function ReservationForm(props) {
@@ -55,13 +51,13 @@ function ReservationForm(props) {
         title: "Oops...",
         text: "CPF inválido, tente novamente.",
       });
-    } 
+    }
   };
 
   const handleReserva = async (quartoId) => {
-    const {success} = await onSubmit({ ...formData, quarto: quartoId });
+    const { success } = await onSubmit({ ...formData, quarto: quartoId });
 
-    if(success){
+    if (success) {
       Swal.fire(
         "Sucesso!",
         "Sua reserva foi concluída com sucesso!",
@@ -74,12 +70,10 @@ function ReservationForm(props) {
         text: "Algum erro ocorreu...",
       });
     }
-
-
   };
 
   return (
-    <div className="flex justify-between w-full flex-row items-center gap-6">
+    <div className="flex justify-between w-full flex-col xl:flex-row items-center gap-6">
       <div className="bg-slate-100 p-4 bg-opacity-20 px-10">
         <h2 className="text-2xl font-semibold mb-4">Dados do hóspede:</h2>
         <form onSubmit={handleSubmit}>
@@ -170,7 +164,10 @@ function ReservationForm(props) {
           </div>
           <div className="mb-4 flex gap-3 items-center justify-center">
             <div className="flex flex-col gap-1">
-              <label htmlFor="data" className="block text-gray-600 font-medium">
+              <label
+                htmlFor="data"
+                className="block text-gray-600 font-medium text-sm xl:text-base"
+              >
                 Data de entrada:
               </label>
               <input
@@ -185,7 +182,10 @@ function ReservationForm(props) {
               />
             </div>
             <div className="flex flex-col gap-1">
-              <label htmlFor="data" className="block text-gray-600 font-medium">
+              <label
+                htmlFor="data"
+                className="block text-gray-600 font-medium text-sm xl:text-base"
+              >
                 Data de saída:
               </label>
               <input
@@ -208,7 +208,7 @@ function ReservationForm(props) {
       {_.isEmpty(quartos) ? (
         <SpinnerCustom />
       ) : (
-        <div className="grid grid-cols-3 gap-7 items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-7 items-center">
           {quartos.map((quarto) => {
             return (
               <RoomsCard

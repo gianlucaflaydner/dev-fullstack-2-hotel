@@ -27,7 +27,7 @@ export default function Reserva() {
   };
 
   return (
-    <div className="w-screen min-h-screen flex items-center justify-center px-32 bg-secondaryColor">
+    <div className="w-screen min-h-screen flex items-center justify-center xl:px-32 bg-secondaryColor">
       <ReservationForm onSubmit={onSubmit} />
     </div>
   );
