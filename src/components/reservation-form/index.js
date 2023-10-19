@@ -3,6 +3,7 @@ import useObterQuartos from "@/services/hooks/useObterQuartos";
 import React, { useEffect, useState } from "react";
 import RoomsCard from "./rooms-card";
 import SpinnerCustom from "../spinner-custom";
+import { isValidCPF, formatCPF, isValidEmail } from "@brazilian-utils/brazilian-utils";
 
 function ReservationForm(props) {
   const { onSubmit } = props;
@@ -20,6 +21,9 @@ function ReservationForm(props) {
   const [quartosForMap, setQuartosForMap] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  console.log(formData, "FORMDATA");
+  console.log(quartosForMap, "quartos");
+
   useEffect(() => {
     if (isLoading && quartos) {
       setQuartosForMap(quartos);
@@ -34,7 +38,18 @@ function ReservationForm(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await onSubmit(formData);
+
+     const formattedCpfValue = formatCPF(FormData.cpf);
+
+    if(isValidCPF(formattedCpfValue) && isValidEmail(formData.email)){
+       // CHAMADA DO FILTRO
+    } else {
+        alert('CPF INVÁLIDO')
+    }
+  };
+
+  const handleReserva = async (quartoId) => {
+    await onSubmit({ ...formData, quarto: quartoId });
   };
 
   return (
@@ -123,14 +138,14 @@ function ReservationForm(props) {
             />
           </div>
           <div className="mb-4 flex gap-3 items-center justify-center">
-            {/* <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1">
               <label htmlFor="data" className="block text-gray-600 font-medium">
                 Data de entrada:
               </label>
               <input
                 type="date"
-                id="data"
-                name="data"
+                id="dataEntrada"
+                name="dataEntrada"
                 value={formData.dataEntrada}
                 onChange={handleChange}
                 className="w-full border rounded-md py-2 px-3"
@@ -143,17 +158,17 @@ function ReservationForm(props) {
               </label>
               <input
                 type="date"
-                id="data"
-                name="data"
+                id="dataSaida"
+                name="dataSaida"
                 value={formData.dataSaida}
                 onChange={handleChange}
                 className="w-full border rounded-md py-2 px-3"
                 required
               />
-            </div> */}
+            </div>
           </div>
           <div className="mt-4 flex items-center justify-center">
-            <ButtonCustom title="Fazer reserva" isRouterButton={false} />
+            <ButtonCustom title="Buscar" isRouterButton={false} />
           </div>
         </form>
       </div>
@@ -165,10 +180,11 @@ function ReservationForm(props) {
             return (
               <RoomsCard
                 isAvailable={true}
-                key={quarto.id}
+                key={quarto._id}
                 roomNumber={quarto.numero}
                 capacity={quarto.capacidade}
                 price={quarto.preco_por_noite}
+                onClickReserva={() => handleReserva(quarto._id)}
               />
             );
           })}

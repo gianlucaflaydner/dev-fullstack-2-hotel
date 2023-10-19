@@ -1,8 +1,10 @@
+
 export default function RoomsCard({
   capacity,
   roomNumber,
   price,
   isAvailable,
+  onClickReserva
 }) {
   return (
     <div
@@ -16,8 +18,9 @@ export default function RoomsCard({
         </p>
         <p className="font-bold text-sm">{capacity} pessoa(s)</p>
       </div>
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center flex-col">
         <h2 className="font-bold text-lg">Quarto {roomNumber}</h2>
+        <button className="bg-primaryColor text-secondaryColor font-bold py-2 px-4 rounded" onClick={onClickReserva}> Reservar </button>
       </div>
     </div>
   );

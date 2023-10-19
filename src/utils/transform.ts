@@ -18,9 +18,9 @@ export const transformHospedeForm = (data) => {
 
 export const transformReservationData = (data) => {
   const formattedData = {
-    data_inicio: transformDateToNewDate(data.dataEntrada),
-    data_final: transformDateToNewDate(data.dataSaida),
-    quarto: data.quarto ?? "651c8264a680be92252577c4",
+    data_inicio: new Date(data.dataEntrada),
+    data_final: new Date(data.dataSaida),
+    quarto: data.quarto,
     hospede: data.hospede,
     services: [],
   };
