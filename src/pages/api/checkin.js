@@ -2,6 +2,17 @@ import Hospede from "@/models/Hospedes";
 import connectDatabase from "@/services/database";
 import Reserva from "@/models/Reservas";
 
+function estaDentroDoIntervalo(dataParaVerificar, dataInicio, dataFim) {
+  const timestampDataParaVerificar = dataParaVerificar.getTime();
+  const timestampDataInicio = dataInicio.getTime();
+  const timestampDataFim = dataFim.getTime();
+
+  return (
+    timestampDataParaVerificar >= timestampDataInicio &&
+    timestampDataParaVerificar <= timestampDataFim
+  );
+}
+
 export default async function handler(req, res) {
   const { method } = req;
 
@@ -15,9 +26,16 @@ export default async function handler(req, res) {
       const hospede = await Hospede.findOne({ cpf });
       const reservas = await Reserva.find({});
 
-      const reservaRespectiva = reservas.find((reserva) =>
-        reserva.hospede.equals(hospede._id)
-      );
+      const reservaRespectiva = reservas.find((reserva) => {
+        const temReserva = reserva.hospede.equals(hospede._id);
+        const estaDentro = estaDentroDoIntervalo(
+          new Date(),
+          reserva.data_inicio,
+          reserva.data_final
+        );
+
+        return temReserva && estaDentro;
+      });
 
       const response =
         reservaRespectiva === undefined
