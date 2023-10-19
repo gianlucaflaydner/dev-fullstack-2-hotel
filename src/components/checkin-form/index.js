@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { isValidCPF, formatCPF } from "@brazilian-utils/brazilian-utils";
 import { transformCPFInOnlyNumbers } from "@/utils/transform";
+import Swal from "sweetalert2";
+import { useRouter } from "next/router";
 
 export default function CheckinForm() {
   const [cpfValue, setCpfValue] = useState("");
+  const router = useRouter()
 
   const handleSubmitCpf = async (e) => {
     e.preventDefault();
@@ -13,10 +16,28 @@ export default function CheckinForm() {
     if (isValidCPF(formattedCpfValue)) {
       const onlyNumbersCPF = transformCPFInOnlyNumbers(formattedCpfValue);
 
-      const resposta = await fetch(`/api/checkin?cpf=${onlyNumbersCPF}`).then(
+      const { success } = await fetch(`/api/checkin?cpf=${onlyNumbersCPF}`).then(
         (response) => response.json()
       );
-      console.log(resposta, "resposta");
+      if(success){
+        Swal.fire(
+          "Sucesso!",
+          "Checkin concluído com sucesso",
+          "success"
+        ).then((result) => {
+          if(result.isConfirmed){
+            router.push('/')
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Algum erro ocorreu...",
+        });
+      }
+      
+        
     } else {
       alert("CPF INVÁLIDO");
     }
