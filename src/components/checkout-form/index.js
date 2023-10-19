@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { isValidCPF, formatCPF } from "@brazilian-utils/brazilian-utils";
+import { transformCPFInOnlyNumbers } from "@/utils/transform";
+import Swal from "sweetalert2";
+import { useRouter } from "next/router";
 
 export default function CheckoutForm() {
   const [cpfValue, setCpfValue] = useState("");
+  const router = useRouter();
 
   const handleSubmitCpf = async (e) => {
     e.preventDefault();
@@ -10,12 +14,43 @@ export default function CheckoutForm() {
     const formattedCpfValue = formatCPF(cpfValue);
 
     if (isValidCPF(formattedCpfValue)) {
-      const resposta = await fetch(
-        `/api/checkout?cpf=${formattedCpfValue.replace(/\D/g, "")}`,
+      const { success, data } = await fetch(
+        `/api/checkout?cpf=${transformCPFInOnlyNumbers(formattedCpfValue)}`,
         { method: "GET" }
       ).then((response) => response.json());
+      if (success) {
+        Swal.fire({
+          title: "Quase lá! Efetue o pagamento: ",
+          text: `Sua reserva ficou R$${data.preco}.00, efetue o pagamento do QRCODE!`,
+          imageUrl: "/images/pix-qrcode.png",
+          imageWidth: 200,
+          imageHeight: 200,
+          imageAlt: "QRCODE",
+          confirmButtonText: "Pago!",
+        })
+          .then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire(
+                "Sucesso!",
+                "Checkout concluído com sucesso",
+                "success"
+              );
+            }
+          })
+          .then(() => router.push("/"));
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Algum erro ocorreu...",
+        });
+      }
     } else {
-      alert("CPF INVÁLIDO");
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "CPF inválido, tente novamente.",
+          });
     }
   };
 

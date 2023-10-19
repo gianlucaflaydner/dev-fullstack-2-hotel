@@ -36,10 +36,12 @@ export default function CheckinForm() {
           text: "Algum erro ocorreu...",
         });
       }
-      
-        
     } else {
-      alert("CPF INVÁLIDO");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "CPF inválido, tente novamente.",
+      });
     }
   };
 
