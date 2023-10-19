@@ -54,8 +54,8 @@ export default function useObterQuartos() {
             const finalDesejado = new Date(dataSaida);
 
             if (
-              inicioReserva < finalReserva &&
-              inicioDesejado < finalDesejado
+              finalDesejado < inicioReserva ||
+              inicioDesejado > finalReserva
             ) {
               quartoVago = false;
             }
