@@ -1,9 +1,14 @@
 import ButtonCustom from "@/components/button/button";
+import Swal from "sweetalert2";
 import useObterQuartos from "@/services/hooks/useObterQuartos";
 import React, { useEffect, useState } from "react";
 import RoomsCard from "./rooms-card";
 import SpinnerCustom from "../spinner-custom";
-import { isValidCPF, formatCPF, isValidEmail } from "@brazilian-utils/brazilian-utils";
+import {
+  isValidCPF,
+  formatCPF,
+
+} from "@brazilian-utils/brazilian-utils";
 import _ from "lodash";
 
 function ReservationForm(props) {
@@ -37,40 +42,54 @@ function ReservationForm(props) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if(name === 'quantidadePessoas'){
-      setQuantidadeDePessoas(value)
-    }
-    if(name === 'dataEntrada'){
-      setDataEntrada(value)
-    }
-    if(name === 'dataSaida'){
-      setDataSaida(value)
-    }
+
     setFormData({ ...formData, [name]: value });
+
+    if (name === "quantidadePessoas") {
+      setQuantidadeDePessoas(value);
+    }
+    if (name === "dataEntrada") {
+      setDataEntrada(value);
+    }
+    if (name === "dataSaida") {
+      setDataSaida(value);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-     const formattedCpfValue = formatCPF(FormData.cpf);
+    const formattedCpfValue = formatCPF(formData.cpf);
 
-    if(isValidCPF(formattedCpfValue) && isValidEmail(formData.email)){
-       // CHAMADA DO FILTRO
-    } else {
-        alert('CPF INVÁLIDO')
-    }
+    if (!isValidCPF(formattedCpfValue)) {
+      alert("CPF INVÁLIDO");
+    } 
   };
 
   const handleReserva = async (quartoId) => {
-    await onSubmit({ ...formData, quarto: quartoId });
+    const {success} = await onSubmit({ ...formData, quarto: quartoId });
+
+    if(success){
+      Swal.fire(
+        "Sucesso!",
+        "Sua reserva foi concluída com sucesso!",
+        "success"
+      );
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Algum erro ocorreu...",
+      });
+    }
+
+
   };
 
   return (
     <div className="flex justify-between w-full flex-row items-center gap-6">
       <div className="bg-slate-100 p-4 bg-opacity-20 px-10">
-        <h2 className="text-2xl font-semibold mb-4">
-          Dados do hóspede:
-        </h2>
+        <h2 className="text-2xl font-semibold mb-4">Dados do hóspede:</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="nome" className="block text-gray-600 font-medium">
@@ -94,6 +113,8 @@ function ReservationForm(props) {
             <input
               type="text"
               placeholder="123.456.789-10"
+              minLength={11}
+              maxLength={14}
               id="cpf"
               name="cpf"
               value={formData.cpf}
@@ -125,7 +146,7 @@ function ReservationForm(props) {
               Email:
             </label>
             <input
-            placeholder="exemplo@gmail.com"
+              placeholder="exemplo@gmail.com"
               type="email"
               id="email"
               name="email"
@@ -135,9 +156,7 @@ function ReservationForm(props) {
               required
             />
           </div>
-          <h2 className="text-2xl font-semibold mb-4">
-          Filtro de busca:
-        </h2>
+          <h2 className="text-2xl font-semibold mb-4">Filtro de busca:</h2>
           <div className="mb-4">
             <label
               htmlFor="quantidadePessoas"

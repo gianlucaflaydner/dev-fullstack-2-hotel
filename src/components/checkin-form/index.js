@@ -1,23 +1,27 @@
 import { useState } from "react";
 import { isValidCPF, formatCPF } from "@brazilian-utils/brazilian-utils";
+import { transformCPFInOnlyNumbers } from "@/utils/transform";
 
 export default function CheckinForm() {
   const [cpfValue, setCpfValue] = useState("");
 
-  const handleSubmitCpf = (e) => {
+  const handleSubmitCpf = async (e) => {
     e.preventDefault();
 
     const formattedCpfValue = formatCPF(cpfValue);
 
-    if(isValidCPF(formattedCpfValue)){
-        // chamada do checkin
+    if (isValidCPF(formattedCpfValue)) {
+      const onlyNumbersCPF = transformCPFInOnlyNumbers(formattedCpfValue);
+
+      const resposta = await fetch(`/api/checkin?cpf=${onlyNumbersCPF}`).then(
+        (response) => response.json()
+      );
+      console.log(resposta, "resposta");
     } else {
-        alert('CPF INVÁLIDO')
+      alert("CPF INVÁLIDO");
     }
+  };
 
-  }
-
-  console.log(cpfValue, 'CPF VALUE');
   return (
     <section className="bg-slate-100 p-4 bg-opacity-20 px-10 rounded h-[400px] flex flex-col items-center justify-center">
       <h1 className="text-2xl font-bold mb-4">Formulário de Check-in</h1>
