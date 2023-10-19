@@ -9,7 +9,7 @@ export default function ButtonCustom({ title, route, isRouterButton}) {
         </button>
       </Link>
     ) : (
-      <button className="bg-primaryColor text-secondaryColor font-bold py-2 px-4 rounded" type='submit'>
+      <button className="bg-primaryColor text-secondaryColor font-bold py-2 px-4 rounded" type='submit' >
         <h1>{title}</h1>
       </button>
     )

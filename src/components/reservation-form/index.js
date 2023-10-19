@@ -62,7 +62,11 @@ function ReservationForm(props) {
     const formattedCpfValue = formatCPF(formData.cpf);
 
     if (!isValidCPF(formattedCpfValue)) {
-      alert("CPF INVÁLIDO");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "CPF inválido, tente novamente.",
+      });
     } 
   };
 
