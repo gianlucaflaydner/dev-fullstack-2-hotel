@@ -4,16 +4,18 @@ import React, { useEffect, useState } from "react";
 import RoomsCard from "./rooms-card";
 import SpinnerCustom from "../spinner-custom";
 
-function ReservationForm() {
+function ReservationForm(props) {
+  const { onSubmit } = props;
+
   const { quartos } = useObterQuartos();
   const [formData, setFormData] = useState({
-    nome: "",
-    cpf: "",
-    celular: "",
-    email: "",
-    quantidadePessoas: "1",
-    dataEntrada: "",
-    dataSaida: "",
+    nome: "Pedro",
+    cpf: "03927129040",
+    celular: "51997819168",
+    email: "pedro@teste.com",
+    quantidadePessoas: "2",
+    dataEntrada: "20/10/2023",
+    dataSaida: "24/10/2023",
   });
   const [quartosForMap, setQuartosForMap] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -25,16 +27,14 @@ function ReservationForm() {
     }
   }, [quartos, isLoading]);
 
-
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    await onSubmit(formData);
   };
 
   return (
@@ -123,7 +123,7 @@ function ReservationForm() {
             />
           </div>
           <div className="mb-4 flex gap-3 items-center justify-center">
-            <div className="flex flex-col gap-1">
+            {/* <div className="flex flex-col gap-1">
               <label htmlFor="data" className="block text-gray-600 font-medium">
                 Data de entrada:
               </label>
@@ -150,7 +150,7 @@ function ReservationForm() {
                 className="w-full border rounded-md py-2 px-3"
                 required
               />
-            </div>
+            </div> */}
           </div>
           <div className="mt-4 flex items-center justify-center">
             <ButtonCustom title="Fazer reserva" isRouterButton={false} />
@@ -162,11 +162,9 @@ function ReservationForm() {
       ) : (
         <div className="grid grid-cols-3 gap-7 items-center">
           {quartosForMap.map((quarto) => {
-
             return (
-
               <RoomsCard
-              isAvailable={true}
+                isAvailable={true}
                 key={quarto.id}
                 roomNumber={quarto.numero}
                 capacity={quarto.capacidade}
