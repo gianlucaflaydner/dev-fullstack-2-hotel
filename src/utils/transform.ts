@@ -28,7 +28,6 @@ export const transformReservationData = (data) => {
 };
 
 export const transformCPFInOnlyNumbers = (cpf) => {
-  // Use a função replace para remover os caracteres não numéricos
   const cpfNumerico = cpf.replace(/\D/g, '');
   return cpfNumerico;
 };

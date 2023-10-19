@@ -7,7 +7,7 @@ const manrope = Manrope({ subsets: ["latin"] });
 export default function Home() {
   return (
     <main
-      className={`flex min-h-screen items-center justify-between p-32 ${manrope.className} bg-secondaryColor`}
+      className={`flex min-h-screen items-center justify-between p-10 lg:p-28 flex-col gap-8 lg:flex-row ${manrope.className} bg-secondaryColor`}
     >
       <HomeCard
         title="Faça uma reserva"
