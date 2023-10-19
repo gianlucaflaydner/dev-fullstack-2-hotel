@@ -1,13 +1,16 @@
 import ButtonCustom from "@/components/button/button";
 import useObterQuartos from "@/services/hooks/useObterQuartos";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import RoomsCard from "./rooms-card";
 import SpinnerCustom from "../spinner-custom";
+import _ from "lodash";
 
 function ReservationForm(props) {
   const { onSubmit } = props;
 
-  const { quartos } = useObterQuartos();
+  const { quartos, setQuantidadeDePessoas, setDataEntrada, setDataSaida } =
+    useObterQuartos();
+
   const [formData, setFormData] = useState({
     nome: "Pedro",
     cpf: "03927129040",
@@ -17,15 +20,6 @@ function ReservationForm(props) {
     dataEntrada: "20/10/2023",
     dataSaida: "24/10/2023",
   });
-  const [quartosForMap, setQuartosForMap] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    if (isLoading && quartos) {
-      setQuartosForMap(quartos);
-      setIsLoading(false);
-    }
-  }, [quartos, isLoading]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -157,11 +151,11 @@ function ReservationForm(props) {
           </div>
         </form>
       </div>
-      {isLoading ? (
+      {_.isEmpty(quartos) ? (
         <SpinnerCustom />
       ) : (
         <div className="grid grid-cols-3 gap-7 items-center">
-          {quartosForMap.map((quarto) => {
+          {quartos.map((quarto) => {
             return (
               <RoomsCard
                 isAvailable={true}

@@ -1,6 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-import Hospedes from "./Hospedes";
-import Quartos from "./Quartos";
 
 const servicosSchema = new mongoose.Schema({
   nome: String,

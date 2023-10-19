@@ -1,5 +1,4 @@
-import mongoose, { Schema } from "mongoose";
-import Reservas from "./Reservas";
+import mongoose from "mongoose";
 
 const quartosSchema = new mongoose.Schema({
   numero: {
