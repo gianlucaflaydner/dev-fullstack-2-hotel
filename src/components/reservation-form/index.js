@@ -1,7 +1,7 @@
 import ButtonCustom from "@/components/button/button";
 import Swal from "sweetalert2";
 import useObterQuartos from "@/services/hooks/useObterQuartos";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import RoomsCard from "./rooms-card";
 import SpinnerCustom from "../spinner-custom";
 import {
@@ -27,18 +27,6 @@ function ReservationForm(props) {
     dataSaida: "",
   });
 
-  const [quartosForMap, setQuartosForMap] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  console.log(formData, "FORMDATA");
-  console.log(quartosForMap, "quartos");
-
-  useEffect(() => {
-    if (isLoading && quartos) {
-      setQuartosForMap(quartos);
-      setIsLoading(false);
-    }
-  }, [quartos, isLoading]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
