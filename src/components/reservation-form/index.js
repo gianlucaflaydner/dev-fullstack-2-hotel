@@ -4,20 +4,24 @@ import React, { useEffect, useState } from "react";
 import RoomsCard from "./rooms-card";
 import SpinnerCustom from "../spinner-custom";
 import { isValidCPF, formatCPF, isValidEmail } from "@brazilian-utils/brazilian-utils";
+import _ from "lodash";
 
 function ReservationForm(props) {
   const { onSubmit } = props;
 
-  const { quartos } = useObterQuartos();
+  const { quartos, setQuantidadeDePessoas, setDataEntrada, setDataSaida } =
+    useObterQuartos();
+
   const [formData, setFormData] = useState({
-    nome: "Pedro",
-    cpf: "03927129040",
-    celular: "51997819168",
-    email: "pedro@teste.com",
-    quantidadePessoas: "2",
-    dataEntrada: "20/10/2023",
-    dataSaida: "24/10/2023",
+    nome: "",
+    cpf: "",
+    celular: "",
+    email: "",
+    quantidadePessoas: "1",
+    dataEntrada: "",
+    dataSaida: "",
   });
+
   const [quartosForMap, setQuartosForMap] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -33,6 +37,15 @@ function ReservationForm(props) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if(name === 'quantidadePessoas'){
+      setQuantidadeDePessoas(value)
+    }
+    if(name === 'dataEntrada'){
+      setDataEntrada(value)
+    }
+    if(name === 'dataSaida'){
+      setDataSaida(value)
+    }
     setFormData({ ...formData, [name]: value });
   };
 
@@ -56,7 +69,7 @@ function ReservationForm(props) {
     <div className="flex justify-between w-full flex-row items-center">
       <div className="bg-slate-100 p-4 bg-opacity-20 px-10">
         <h2 className="text-2xl font-semibold mb-4">
-          Reserva de Quarto de Hotel
+          Dados do hóspede:
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -64,6 +77,7 @@ function ReservationForm(props) {
               Nome:
             </label>
             <input
+              placeholder="João da Silva"
               type="text"
               id="nome"
               name="nome"
@@ -79,6 +93,7 @@ function ReservationForm(props) {
             </label>
             <input
               type="text"
+              placeholder="123.456.789-10"
               id="cpf"
               name="cpf"
               value={formData.cpf}
@@ -95,6 +110,7 @@ function ReservationForm(props) {
               Celular:
             </label>
             <input
+              placeholder="(51) 999999999"
               type="text"
               id="celular"
               name="celular"
@@ -109,6 +125,7 @@ function ReservationForm(props) {
               Email:
             </label>
             <input
+            placeholder="exemplo@gmail.com"
               type="email"
               id="email"
               name="email"
@@ -118,6 +135,9 @@ function ReservationForm(props) {
               required
             />
           </div>
+          <h2 className="text-2xl font-semibold mb-4">
+          Filtro de busca:
+        </h2>
           <div className="mb-4">
             <label
               htmlFor="quantidadePessoas"
@@ -143,7 +163,8 @@ function ReservationForm(props) {
                 Data de entrada:
               </label>
               <input
-                type="date"
+                type="text"
+                placeholder="dd/mm/aaaa"
                 id="dataEntrada"
                 name="dataEntrada"
                 value={formData.dataEntrada}
@@ -157,7 +178,8 @@ function ReservationForm(props) {
                 Data de saída:
               </label>
               <input
-                type="date"
+                type="text"
+                placeholder="dd/mm/aaaa"
                 id="dataSaida"
                 name="dataSaida"
                 value={formData.dataSaida}
@@ -172,11 +194,11 @@ function ReservationForm(props) {
           </div>
         </form>
       </div>
-      {isLoading ? (
+      {_.isEmpty(quartos) ? (
         <SpinnerCustom />
       ) : (
         <div className="grid grid-cols-3 gap-7 items-center">
-          {quartosForMap.map((quarto) => {
+          {quartos.map((quarto) => {
             return (
               <RoomsCard
                 isAvailable={true}

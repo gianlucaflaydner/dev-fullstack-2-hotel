@@ -14,7 +14,10 @@ const reservasSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  services: [servicosSchema],
+  services: {
+    type: [servicosSchema],
+    required: true,
+  },
   hospede: {
     type: Schema.Types.ObjectId,
     ref: "Hospedes",
@@ -27,7 +30,7 @@ const reservasSchema = new mongoose.Schema({
   },
 });
 
-const Reservas =
+const Reserva =
   mongoose.models.reservas ?? mongoose.model("reservas", reservasSchema);
 
-export default Reservas;
+export default Reserva;

@@ -21,10 +21,11 @@ const hospedesSchema = new mongoose.Schema({
   },
   preferencias: {
     type: [String],
+    required: true,
   },
 });
 
-const Hospedes =
+const Hospede =
   mongoose.models.hospedes ?? mongoose.model("hospedes", hospedesSchema);
 
-export default Hospedes;
+export default Hospede;
