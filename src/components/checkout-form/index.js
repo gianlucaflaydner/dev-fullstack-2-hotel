@@ -37,7 +37,8 @@ export default function CheckoutForm() {
               );
             }
           })
-          .then(() => router.push("/"));
+          .then(() => {
+            router.push("/")});
       } else {
         Swal.fire({
           icon: "error",

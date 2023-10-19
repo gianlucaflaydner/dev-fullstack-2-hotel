@@ -4,6 +4,7 @@ import useObterQuartos from "@/services/hooks/useObterQuartos";
 import React, { useEffect, useState } from "react";
 import RoomsCard from "./rooms-card";
 import SpinnerCustom from "../spinner-custom";
+import { useRouter } from "next/router";
 import {
   isValidCPF,
   formatCPF,
@@ -16,6 +17,8 @@ function ReservationForm(props) {
 
   const { quartos, setQuantidadeDePessoas, setDataEntrada, setDataSaida } =
     useObterQuartos();
+
+    const router = useRouter()
 
   const [formData, setFormData] = useState({
     nome: "",
@@ -78,7 +81,7 @@ function ReservationForm(props) {
         "Sucesso!",
         "Sua reserva foi concluída com sucesso!",
         "success"
-      );
+      ).then(() => router.push('/'));
     } else {
       Swal.fire({
         icon: "error",
