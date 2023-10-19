@@ -1,3 +1,4 @@
+import { transformDateToNewDate } from "@/utils/transform";
 import _ from "lodash";
 import { useEffect, useState } from "react";
 
@@ -50,12 +51,12 @@ export default function useObterQuartos() {
             const inicioReserva = new Date(reserva.data_inicio);
             const finalReserva = new Date(reserva.data_final);
 
-            const inicioDesejado = new Date(dataEntrada);
-            const finalDesejado = new Date(dataSaida);
+            const inicioDesejado = transformDateToNewDate(dataEntrada);
+            const finalDesejado = transformDateToNewDate(dataSaida);
 
             if (
-              inicioReserva < finalReserva &&
-              inicioDesejado < finalDesejado
+              finalDesejado < inicioReserva ||
+              inicioDesejado > finalReserva
             ) {
               quartoVago = false;
             }
