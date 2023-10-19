@@ -1,8 +1,14 @@
 import ButtonCustom from "@/components/button/button";
+import Swal from "sweetalert2";
 import useObterQuartos from "@/services/hooks/useObterQuartos";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RoomsCard from "./rooms-card";
 import SpinnerCustom from "../spinner-custom";
+import {
+  isValidCPF,
+  formatCPF,
+
+} from "@brazilian-utils/brazilian-utils";
 import _ from "lodash";
 
 function ReservationForm(props) {
@@ -12,37 +18,85 @@ function ReservationForm(props) {
     useObterQuartos();
 
   const [formData, setFormData] = useState({
-    nome: "Pedro",
-    cpf: "03927129040",
-    celular: "51997819168",
-    email: "pedro@teste.com",
-    quantidadePessoas: "2",
-    dataEntrada: "20/10/2023",
-    dataSaida: "24/10/2023",
+    nome: "",
+    cpf: "",
+    celular: "",
+    email: "",
+    quantidadePessoas: "1",
+    dataEntrada: "",
+    dataSaida: "",
   });
+
+  const [quartosForMap, setQuartosForMap] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  console.log(formData, "FORMDATA");
+  console.log(quartosForMap, "quartos");
+
+  useEffect(() => {
+    if (isLoading && quartos) {
+      setQuartosForMap(quartos);
+      setIsLoading(false);
+    }
+  }, [quartos, isLoading]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFormData({ ...formData, [name]: value });
+
+    if (name === "quantidadePessoas") {
+      setQuantidadeDePessoas(value);
+    }
+    if (name === "dataEntrada") {
+      setDataEntrada(value);
+    }
+    if (name === "dataSaida") {
+      setDataSaida(value);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await onSubmit(formData);
+
+    const formattedCpfValue = formatCPF(formData.cpf);
+
+    if (!isValidCPF(formattedCpfValue)) {
+      alert("CPF INVÁLIDO");
+    } 
+  };
+
+  const handleReserva = async (quartoId) => {
+    const {success} = await onSubmit({ ...formData, quarto: quartoId });
+
+    if(success){
+      Swal.fire(
+        "Sucesso!",
+        "Sua reserva foi concluída com sucesso!",
+        "success"
+      );
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Algum erro ocorreu...",
+      });
+    }
+
+
   };
 
   return (
-    <div className="flex justify-between w-full flex-row items-center">
+    <div className="flex justify-between w-full flex-row items-center gap-6">
       <div className="bg-slate-100 p-4 bg-opacity-20 px-10">
-        <h2 className="text-2xl font-semibold mb-4">
-          Reserva de Quarto de Hotel
-        </h2>
+        <h2 className="text-2xl font-semibold mb-4">Dados do hóspede:</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="nome" className="block text-gray-600 font-medium">
               Nome:
             </label>
             <input
+              placeholder="João da Silva"
               type="text"
               id="nome"
               name="nome"
@@ -58,6 +112,9 @@ function ReservationForm(props) {
             </label>
             <input
               type="text"
+              placeholder="123.456.789-10"
+              minLength={11}
+              maxLength={14}
               id="cpf"
               name="cpf"
               value={formData.cpf}
@@ -74,6 +131,7 @@ function ReservationForm(props) {
               Celular:
             </label>
             <input
+              placeholder="(51) 999999999"
               type="text"
               id="celular"
               name="celular"
@@ -88,6 +146,7 @@ function ReservationForm(props) {
               Email:
             </label>
             <input
+              placeholder="exemplo@gmail.com"
               type="email"
               id="email"
               name="email"
@@ -97,6 +156,7 @@ function ReservationForm(props) {
               required
             />
           </div>
+          <h2 className="text-2xl font-semibold mb-4">Filtro de busca:</h2>
           <div className="mb-4">
             <label
               htmlFor="quantidadePessoas"
@@ -117,14 +177,15 @@ function ReservationForm(props) {
             />
           </div>
           <div className="mb-4 flex gap-3 items-center justify-center">
-            {/* <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1">
               <label htmlFor="data" className="block text-gray-600 font-medium">
                 Data de entrada:
               </label>
               <input
-                type="date"
-                id="data"
-                name="data"
+                type="text"
+                placeholder="dd/mm/aaaa"
+                id="dataEntrada"
+                name="dataEntrada"
                 value={formData.dataEntrada}
                 onChange={handleChange}
                 className="w-full border rounded-md py-2 px-3"
@@ -136,18 +197,19 @@ function ReservationForm(props) {
                 Data de saída:
               </label>
               <input
-                type="date"
-                id="data"
-                name="data"
+                type="text"
+                placeholder="dd/mm/aaaa"
+                id="dataSaida"
+                name="dataSaida"
                 value={formData.dataSaida}
                 onChange={handleChange}
                 className="w-full border rounded-md py-2 px-3"
                 required
               />
-            </div> */}
+            </div>
           </div>
           <div className="mt-4 flex items-center justify-center">
-            <ButtonCustom title="Fazer reserva" isRouterButton={false} />
+            <ButtonCustom title="Buscar" isRouterButton={false} />
           </div>
         </form>
       </div>
@@ -159,10 +221,11 @@ function ReservationForm(props) {
             return (
               <RoomsCard
                 isAvailable={true}
-                key={quarto.id}
+                key={quarto._id}
                 roomNumber={quarto.numero}
                 capacity={quarto.capacidade}
                 price={quarto.preco_por_noite}
+                onClickReserva={() => handleReserva(quarto._id)}
               />
             );
           })}

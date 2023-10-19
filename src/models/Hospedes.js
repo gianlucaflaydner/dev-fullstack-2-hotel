@@ -8,12 +8,10 @@ const hospedesSchema = new mongoose.Schema({
   cpf: {
     type: String,
     required: true,
-    unique: true,
   },
   email: {
     type: String,
     required: true,
-    unique: true,
   },
   telefone: {
     type: String,
