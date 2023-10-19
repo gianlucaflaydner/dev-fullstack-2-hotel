@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { isValidCPF, formatCPF } from "@brazilian-utils/brazilian-utils";
 
-export default function CheckinForm() {
+export default function CheckoutForm() {
   const [cpfValue, setCpfValue] = useState("");
 
   const handleSubmitCpf = (e) => {
@@ -10,7 +10,7 @@ export default function CheckinForm() {
     const formattedCpfValue = formatCPF(cpfValue);
 
     if(isValidCPF(formattedCpfValue)){
-        // chamada do checkin
+        // chamada do checout
     } else {
         alert('CPF INVÁLIDO')
     }
@@ -20,7 +20,7 @@ export default function CheckinForm() {
   console.log(cpfValue, 'CPF VALUE');
   return (
     <section className="bg-slate-100 p-4 bg-opacity-20 px-10 rounded h-[400px] flex flex-col items-center justify-center">
-      <h1 className="text-2xl font-bold mb-4">Formulário de Check-in</h1>
+      <h1 className="text-2xl font-bold mb-4">Formulário de Check-out</h1>
 
       <form
         action="/processar_checkin"

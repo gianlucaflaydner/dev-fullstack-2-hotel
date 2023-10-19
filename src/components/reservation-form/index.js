@@ -66,7 +66,7 @@ function ReservationForm(props) {
   };
 
   return (
-    <div className="flex justify-between w-full flex-row items-center">
+    <div className="flex justify-between w-full flex-row items-center gap-6">
       <div className="bg-slate-100 p-4 bg-opacity-20 px-10">
         <h2 className="text-2xl font-semibold mb-4">
           Dados do hóspede:
