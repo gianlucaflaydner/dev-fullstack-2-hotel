@@ -7,10 +7,9 @@ export const transformDateToNewDate = (date) => {
 export const transformHospedeForm = (data) => {
   const formattedData = {
     nome: data.nome,
-    cpf: data.cpf,
+    cpf: data.cpf.replace(/\D/g, ''),
     email: data.email,
     telefone: data.celular,
-    preferencias: [],
   };
 
   return formattedData;

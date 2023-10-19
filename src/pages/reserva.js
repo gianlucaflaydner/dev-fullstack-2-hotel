@@ -13,24 +13,15 @@ export default function Reserva() {
       "Content-Type": "application/json",
     };
 
-    const hospedeResponse = await fetch("/api/hospedes", {
-      ...options,
-      body: JSON.stringify(hospedeBody),
-    }).then((response) => response.json());
-
-    if (!hospedeResponse.success) return hospedeResponse;
-
     const reservaBody = transformReservationData({
       ...data,
-      hospede: hospedeResponse.data._id,
+      hospede: hospedeBody,
     });
 
     const reservaResponse = await fetch("/api/reservas", {
       ...options,
       body: JSON.stringify(reservaBody),
     }).then((response) => response.json());
-
-    console.log("reservaResponse", reservaResponse);
 
     return reservaResponse;
   };

@@ -11,9 +11,9 @@ export default function useObterQuartos() {
       const resposta = await fetch("/api/quartos").then((response) =>
         response.json()
       );
-      const reservasResposta = await fetch("/api/reservas").then((response) =>
-        response.json()
-      );
+      const reservasResposta = await fetch("/api/reservas", {
+        method: "GET",
+      }).then((response) => response.json());
 
       const quartosComReserva = resposta.data.map((quarto) => {
         const reservas = reservasResposta.data.filter(
@@ -55,8 +55,9 @@ export default function useObterQuartos() {
             const finalDesejado = transformDateToNewDate(dataSaida);
 
             if (
-              finalDesejado < inicioReserva ||
-              inicioDesejado > finalReserva
+              (inicioDesejado >= inicioReserva &&
+                finalDesejado <= finalReserva) ||
+              (inicioDesejado <= inicioReserva && finalDesejado >= finalReserva)
             ) {
               quartoVago = false;
             }
@@ -67,6 +68,7 @@ export default function useObterQuartos() {
 
         return true;
       });
+      console.log("quartosFiltrados", quartosFiltrados.length);
 
       setQuartosFiltrados(quartosFiltrados);
     }
